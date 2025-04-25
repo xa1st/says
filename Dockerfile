@@ -17,7 +17,7 @@ WORKDIR /app
 COPY --from=build /app/says .
 
 # 暴露8080端口，供外部访问
-EXPOSE 3000
+EXPOSE 9527
 
 # 指定容器启动时执行的命令
 CMD ["./says"]
