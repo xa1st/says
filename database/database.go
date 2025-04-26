@@ -14,11 +14,17 @@ import (
 // 初始化数据库
 func InitDB() (*sql.DB, error) {
 	// 从环境变量中数据库连接串
-	dsn := os.Getenv("DATABASE_URL")
-	if dsn == "" {
+	dbUrl := os.Getenv("DATABASE_URL")
+	if dbUrl == "" {
 		// 正式环境则抛出错误
-		return nil, fmt.Errorf("请使用`lade env set DATABASE_URL=libsql://a.xxx.turso.io?authToken=xxxxxx --app myapp` 命令")
+		return nil, fmt.Errorf("请使用`lade env set DATABASE_URL=libsql://xxx.turso.io --app myapp` 命令指定URL路径")
 	}
+	authToken := os.Getenv("AUTH_TOKEN")
+	if authToken == "" {
+		return nil, fmt.Errorf("请使用`lade env set AUTH_TOKEN=xxx --app myapp` 命令指定TOKEN")
+	}
+	// 生成链接字符串
+	dsn := fmt.Sprintf("%s?authToken=%s", dbUrl, authToken)
 	// 连接数据库
 	db, err := sql.Open("libsql", dsn)
 	if err != nil {
