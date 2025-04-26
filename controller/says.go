@@ -77,6 +77,8 @@ func (ctrl *Controller) List(c *gin.Context) {
 		})
 		return
 	}
+	// 设置缓存控制头，缓存3600秒
+	c.Header("Cache-Control", "public, max-age=3600")
 	// 返回结果
 	c.JSON(http.StatusOK, gin.H{
 		"status":  1,
